@@ -2159,6 +2159,7 @@ GameObject:
   - component: {fileID: 742049638}
   - component: {fileID: 742049637}
   - component: {fileID: 742049641}
+  - component: {fileID: 742049642}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -2275,6 +2276,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+--- !u!114 &742049642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 742049635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a37549906f19e4d9f7c3237387b814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamagePower: 5
+  MinFireTime: 2
+  MaxFireTime: 5
+  City: {fileID: 0}
 --- !u!1 &764178449
 GameObject:
   m_ObjectHideFlags: 0
@@ -3517,6 +3533,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1317312637}
+  - component: {fileID: 1317312638}
   m_Layer: 0
   m_Name: City
   m_TagString: Untagged
@@ -3573,6 +3590,20 @@ Transform:
   m_Father: {fileID: 538186941}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1317312638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1317312636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10520cc8fae58484f899cd4831ba1bbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 0
+  IsDead: 0
+  MaxHealth: 100
 --- !u!1 &1352074057
 GameObject:
   m_ObjectHideFlags: 0

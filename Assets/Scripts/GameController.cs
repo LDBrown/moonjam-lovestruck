@@ -15,7 +15,6 @@ public class GameController : MonoBehaviour
 	{
 		targetInitialized = false;
 		eventHandler = multiTarget.GetComponent<BasicTrackableEventHandler> ();
-		
 	}
 	
 	// Update is called once per frame
