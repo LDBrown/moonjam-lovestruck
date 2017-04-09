@@ -19,7 +19,7 @@ MonoBehaviour:
     maxSimultaneousObjectTargets: 1
     useDelayedLoadingObjectTargets: 0
     cameraDirection: 0
-    mirrorVideoBackground: 2
+    mirrorVideoBackground: 0
   digitalEyewear:
     cameraOffset: 0
     distortionRenderingMode: 1

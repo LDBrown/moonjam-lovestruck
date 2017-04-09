@@ -12,8 +12,7 @@ public class Timer : MonoBehaviour {
     private int Loops; 
     [SerializeField]
     private int NumberOfLoops;
-    [SerializeField]
-    private bool Running;
+    public bool Running { get; private set; }
 
     public delegate void TimerCallback(Timer t);
     public TimerCallback OnCompleteCallback;
@@ -63,5 +62,10 @@ public class Timer : MonoBehaviour {
         {
             OnCompleteCallback(this);
         }
+    }
+
+    public float GetTimeLeft()
+    {
+        return EndTime - CurrentTime;
     }
 }

@@ -6,7 +6,8 @@ using UnityEngine.Events;
 public class EnemyShip : MonoBehaviour {
 
     [SerializeField]
-    private int DamagePower;
+    private int[] DamagePowers = new int[] { };
+    private int DamagePower = 5;
     [SerializeField]
     private float MinFireTime;
     [SerializeField]
@@ -17,14 +18,14 @@ public class EnemyShip : MonoBehaviour {
     [SerializeField]
     private int Health;
     [SerializeField]
-    private int MaxHealth = 5;
-    [SerializeField]
-    private bool IsDead;
+    private int[] MaxHealth = new int[] { };
+    public bool IsDead { get; private set; }
+    public int Level = 1;
 
 	// Use this for initialization
 	void Start () {
         IsDead = false;
-        Health = MaxHealth;
+        Health = GetMaxHealth();
         City = GameObject.FindObjectOfType<City>();
         DamageTimer = gameObject.AddComponent<Timer>();
         DamageTimer.StartTimer(Random.Range(MinFireTime, MaxFireTime), 1, OnTimerComplete);
@@ -49,16 +50,46 @@ public class EnemyShip : MonoBehaviour {
 
     public void HitShip(int damage)
     {
-        Debug.Log("Ship HIT!!!");
-        Health -= damage;
-        if (Health <= 0)
+        if (GameController.GameStarted)
         {
-            IsDead = true;
+            Debug.Log("Ship HIT!!!");
+            Health -= damage;
+            if (Health <= 0)
+            {
+                IsDead = true;
+            }
         }
     }
 
     public void OnGazeHit()
     {
         HitShip(1);
+    }
+
+    public void SetStats(int level)
+    {
+        Level = level;
+        Health = GetMaxHealth();
+        DamagePower = GetDamagePower(); 
+    }
+
+    private int GetMaxHealth()
+    {
+        if (MaxHealth.Length < Level && Level > 0)
+        {
+            return MaxHealth[Level-1];
+        }
+
+        return 5; 
+    }
+
+    private int GetDamagePower()
+    {
+        if(DamagePowers.Length < Level && Level > 0)
+        {
+            return DamagePowers[Level - 1];
+        }
+
+        return 5;
     }
 }

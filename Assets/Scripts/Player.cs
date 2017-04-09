@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
     private Timer FireRateTimer;
     private Timer FireWindowTimer;
     private LineRenderer Laser;
-    private int FireSide = 0;
+    private AudioSource LaserSound;
 
     public static bool CanFire = true;
     public static bool IsFiring = true;
@@ -27,11 +27,12 @@ public class Player : MonoBehaviour {
         Laser.startColor = Color.green;
         Laser.endColor = Color.green;
         Laser.sortingLayerName = "Lasers";
+        LaserSound = gameObject.GetComponent<AudioSource>();
 	}
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && Player.CanFire)
+        if (Input.GetMouseButtonDown(0) && Player.CanFire && GameController.GameStarted)
         {
             FireWindowTimer.StartTimer(FireWindow, 1, FireWindowOnComplete);
             FireLazer();
@@ -55,15 +56,19 @@ public class Player : MonoBehaviour {
     void FireLazer()
     {
         var origin = this.transform.position;
-        var offset = Input.mousePosition.x > Screen.width / 2 ? this.transform.right : -this.transform.right;
+        var isRight = Input.mousePosition.x > Screen.width / 2;
+        var offset = isRight ? this.transform.right : -this.transform.right;
         if (Input.touches.Length > 0)
         {
             offset = Input.GetTouch(0).position.x > Screen.width / 2 ? this.transform.right : -this.transform.right;
         }
-        Debug.Log("Mouse position x " + Input.mousePosition.x + " " + Camera.main.WorldToScreenPoint(Input.mousePosition).x + " Screen width/2 " + Screen.width / 2);
         var direction = this.transform.forward;
         Laser.widthMultiplier = 0.5f;
         Laser.SetPosition(0, origin + (offset * 2));
         Laser.SetPosition(1, origin + (direction * 200) + offset * 15);
+
+        LaserSound.panStereo = isRight ? 1 : -1;  
+        LaserSound.clip = AudioManager.GetInsatnce().GetLaser();
+        LaserSound.Play();
     }
 }
