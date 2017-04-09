@@ -2291,6 +2291,9 @@ MonoBehaviour:
   MinFireTime: 2
   MaxFireTime: 5
   City: {fileID: 0}
+  Health: 0
+  MaxHealth: 1
+  IsDead: 0
 --- !u!1 &764178449
 GameObject:
   m_ObjectHideFlags: 0
