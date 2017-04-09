@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     private int FireSide = 0;
 
     public static bool CanFire = true;
+    public static bool IsFiring = true;
 
 	// Use this for initialization
 	void Start ()
@@ -20,7 +21,7 @@ public class Player : MonoBehaviour {
         FireRateTimer = gameObject.AddComponent<Timer>();
         FireWindowTimer = gameObject.AddComponent<Timer>();
         Laser = gameObject.AddComponent<LineRenderer>();
-        Laser.material = new Material(Shader.Find("Particles/Additive"));
+        Laser.material = new Material(Shader.Find("Unlit/Texture"));
         Laser.widthMultiplier = 0f;
         Laser.numPositions = 2;
         Laser.startColor = Color.green;
@@ -33,12 +34,14 @@ public class Player : MonoBehaviour {
         {
             FireWindowTimer.StartTimer(FireWindow, 1, FireWindowOnComplete);
             FireLazer();
+            Player.IsFiring = true;
+            Player.CanFire = false;
         }
     }
 
     void FireWindowOnComplete(Timer t)
     {
-        Player.CanFire = false;
+        Player.IsFiring = false;
         Laser.widthMultiplier = 0;
         FireRateTimer.StartTimer(FireRate, 1, FireRateOnComplete);
     }
@@ -51,9 +54,13 @@ public class Player : MonoBehaviour {
     void FireLazer()
     {
         var origin = this.transform.position;
-        var offset = FireSide++ % 2 == 0 ? this.transform.right : -this.transform.right;
+        var offset = Input.mousePosition.x > Screen.width / 2 ? this.transform.right : -this.transform.right;
+        if (Input.touches.Length > 0)
+        {
+            offset = Input.GetTouch(0).position.x > Screen.width / 2 ? this.transform.right : -this.transform.right;
+        }
+        Debug.Log("Mouse position x " + Input.mousePosition.x + " " + Camera.main.WorldToScreenPoint(Input.mousePosition).x + " Screen width/2 " + Screen.width / 2);
         var direction = this.transform.forward;
-        Debug.Log("Start: " + (origin + (offset * 2).ToString() + " End: " + (origin + (direction * 200)).ToString()));
         Laser.widthMultiplier = 0.5f;
         Laser.SetPosition(0, origin + (offset * 2));
         Laser.SetPosition(1, origin + (direction * 200) + offset * 15);
