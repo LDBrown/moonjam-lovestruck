@@ -49,11 +49,14 @@ public class EnemyShip : MonoBehaviour {
 
     public void HitShip(int damage)
     {
-        Debug.Log("Ship HIT!!!");
-        Health -= damage;
-        if (Health <= 0)
+        if (Player.CanFire)
         {
-            IsDead = true;
+            Debug.Log("Ship HIT!!!");
+            Health -= damage;
+            if (Health <= 0)
+            {
+                IsDead = true;
+            }
         }
     }
 

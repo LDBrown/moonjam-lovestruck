@@ -471,8 +471,13 @@ PlayerSettings:
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
-  cloudProjectId: d0a57f2d-59f9-4b60-a2e7-3b4982c475ea
-  projectName: MoonJam_Test
-  organizationId: luke-brown-3954842
+  cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
+    UNet: 0
+  cloudProjectId: 
+  projectName: 
+  organizationId: 
   cloudEnabled: 0

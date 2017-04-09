@@ -50,12 +50,15 @@ public class GameController : MonoBehaviour
 
 		yield return new WaitForSeconds (delay);
 
-		SpawnShip (1, 1, 1);
+		SpawnShip (1, 1);
 		Debug.Log ("Spawn wave:" + waveNumber);
 
 	}
 
 	void SpawnShip(int level, int spline)
+    {
+
+    }
 
 	public int GetCurrentWave ()
 	{
