@@ -26,6 +26,7 @@ public class Player : MonoBehaviour {
         Laser.numPositions = 2;
         Laser.startColor = Color.green;
         Laser.endColor = Color.green;
+        Laser.sortingLayerName = "Lasers";
 	}
 
     private void Update()
