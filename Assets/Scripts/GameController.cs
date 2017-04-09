@@ -24,6 +24,10 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Text CountDown;
     private List<GameObject> activeShips;
+    [SerializeField]
+    private Text Wave;
+    [SerializeField]
+    private Text GameOver;
 
 	// Use this for initialization
 	void Start ()
@@ -82,6 +86,14 @@ public class GameController : MonoBehaviour
             }
         }
 
+        Wave.text = "Wave: " + currentWave;
+
+        if (City.IsDead)
+        {
+            GameStarted = false;
+            GameOver.enabled = true;
+        }
+
 	}
 
     void OnWaveTimer(Timer t)
@@ -95,9 +107,33 @@ public class GameController : MonoBehaviour
 	{
 		waveActive = true;
 
-		SpawnShip (1, 0);
+        switch(waveNumber)
+        {
+            case 0:
+                SpawnShip(1, 0);
+                break;
+            case 1:
+                SpawnShip(1, 1);
+                break;
+            case 2:
+                SpawnShip(1, 0);
+                SpawnShip(1, 2);
+                break;
+            case 3:
+                SpawnShip(2, 1);
+                break;
+            case 4:
+                SpawnShip(2, 1);
+                SpawnShip(1, 0);
+                SpawnShip(1, 2);
+                break;
+            default:
+                SpawnShip(2, 0);
+                SpawnShip(2, 1);
+                SpawnShip(2, 2);
+                break;
+        }
 		Debug.Log ("Spawn wave:" + waveNumber);
-
 	}
 
 	void SpawnShip(int level, int spline)

@@ -21,6 +21,13 @@ public class EnemyShip : MonoBehaviour {
     private int[] MaxHealth = new int[] { };
     public bool IsDead { get; private set; }
     public int Level = 1;
+    private AudioSource audioSource;
+    private LineRenderer Laser;
+    private Timer laserTimer;
+    private ParticleSystem particles;
+
+    private Material oriMat;
+    private Color origColor;
 
 	// Use this for initialization
 	void Start () {
@@ -28,11 +35,24 @@ public class EnemyShip : MonoBehaviour {
         Health = GetMaxHealth();
         City = GameObject.FindObjectOfType<City>();
         DamageTimer = gameObject.AddComponent<Timer>();
-        DamageTimer.StartTimer(Random.Range(MinFireTime, MaxFireTime), 1, OnTimerComplete);
 
         var gaze = gameObject.GetComponent<BasicGazeButton>();
         gaze.OnGazeInput.AddListener(OnGazeHit);
-	}
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+
+        laserTimer = gameObject.AddComponent<Timer>();
+        Laser = gameObject.AddComponent<LineRenderer>();
+        Laser.material  = new Material(Shader.Find("Particles/Additive"));
+        Laser.widthMultiplier = 0f;
+        Laser.numPositions = 2;
+        Laser.startColor = Color.red;
+        Laser.endColor = Color.red;
+        particles = gameObject.GetComponentInChildren<ParticleSystem>();
+
+        //oriMat = gameObject.GetComponentInChildren<Material>();
+        //origColor = oriMat.color;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -40,25 +60,44 @@ public class EnemyShip : MonoBehaviour {
         {
             gameObject.SetActive(false);
         }
+
+        if (!DamageTimer.Running && GameController.GameStarted)
+        {
+            DamageTimer.StartTimer(Random.Range(MinFireTime, MaxFireTime), 1, OnTimerComplete);
+        }
 	}
 
     void OnTimerComplete(Timer t)
     {
         DamageTimer.StartTimer(Random.Range(MinFireTime, MaxFireTime), 1, OnTimerComplete);
         City.DamageCity(DamagePower);
+        Laser.widthMultiplier = .02f;
+        Laser.SetPosition(0, this.transform.position);
+        Laser.SetPosition(1, City.transform.position);
+        laserTimer.StartTimer(.25f, 1, OnLaserEnd);
     }
 
     public void HitShip(int damage)
     {
         if (GameController.GameStarted)
         {
+            //particles.Emit(5); 
             Debug.Log("Ship HIT!!!");
+            audioSource.clip = AudioManager.GetInsatnce().GetExplosion();
+            audioSource.Play();
             Health -= damage;
+            //oriMat.color = Color.red;
             if (Health <= 0)
             {
                 IsDead = true;
             }
         }
+    }
+
+    private void OnLaserEnd(Timer t)
+    {
+        Laser.widthMultiplier = 0;
+       // oriMat.color = origColor;
     }
 
     public void OnGazeHit()
@@ -79,6 +118,10 @@ public class EnemyShip : MonoBehaviour {
         {
             return MaxHealth[Level-1];
         }
+        else if (MaxHealth.Length > 0 && Level > 0)
+        {
+            return MaxHealth[MaxHealth.Length - 1];
+        }
 
         return 5; 
     }
@@ -88,6 +131,10 @@ public class EnemyShip : MonoBehaviour {
         if(DamagePowers.Length < Level && Level > 0)
         {
             return DamagePowers[Level - 1];
+        }
+        else if (DamagePowers.Length > 0 && Level > 0)
+        {
+            return DamagePowers[DamagePowers.Length - 1];
         }
 
         return 5;

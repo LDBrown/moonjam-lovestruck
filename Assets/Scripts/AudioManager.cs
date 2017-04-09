@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour {
     private AudioClip Music;
     [SerializeField]
     private AudioClip[] Lasers;
+    [SerializeField]
+    private AudioClip[] Explosions;
     private AudioSource MusicSource;
     private static AudioManager instance;
 
@@ -46,5 +48,11 @@ public class AudioManager : MonoBehaviour {
     {
         var random = (int)(Mathf.Floor(Random.Range(0, Lasers.Length)));
         return Lasers[random];
+    }
+
+    public AudioClip GetExplosion()
+    {
+        var random = (int)Mathf.Floor(Random.Range(0, Lasers.Length));
+        return Explosions[random];
     }
 }
